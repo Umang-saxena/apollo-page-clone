@@ -10,10 +10,13 @@ const DoctorCard = ({
     location,
     fees,
     cashback,
-    rating,
+    rating, // Rating is an object
     isDoctorOfTheHour,
     imageUrl,
 }) => {
+    // Destructure rating object if available
+    const { percentage, totalPatients } = rating || {};
+
     return (
         <div className="flex items-center bg-white shadow-md rounded-lg p-4 mb-4">
             <Image
@@ -28,11 +31,18 @@ const DoctorCard = ({
                     <div>
                         <h3 className="text-lg font-semibold text-gray-800">{name}</h3>
                         <p className="text-sm text-gray-600">{specialty}</p>
-                        <p className="text-sm text-gray-600">{experience}</p>
-                        <p className="text-sm text-gray-500">{location}</p>
-                        {rating && (
+                        {/* Render experience details */}
+                        <p className="text-sm text-gray-600">
+                            {experience.years} years of experience
+                        </p>
+                        <p className="text-sm text-gray-600">{experience.qualification}</p>
+                        {/* Render location details */}
+                        <p className="text-sm text-gray-500">{location.clinic}</p>
+                        <p className="text-sm text-gray-500">{location.city}, {location.state}</p>
+                        {/* Render rating details */}
+                        {rating && percentage && totalPatients && (
                             <p className="text-sm text-green-600 mt-1">
-                                👍 {rating}
+                                👍 {percentage}% (Based on {totalPatients} patients)
                             </p>
                         )}
                     </div>
@@ -58,4 +68,4 @@ const DoctorCard = ({
     );
 };
 
-export default DoctorCard; 
+export default DoctorCard;
