@@ -2,20 +2,32 @@
 import React, { useState } from 'react';
 
 // Reusable CheckboxGroup Component for filter sections
-const CheckboxGroup = ({ title, options, selectedOptions, onChange }) => {
+const CheckboxGroup = ({ title, options, selectedOptions, onChange, showMore, onShowMore }) => {
+    const isMoreOption = (option) => option.startsWith('+');
+    
     return (
         <div className="mb-6">
             <h3 className="text-sm font-semibold text-gray-700 mb-2">{title}</h3>
             {options.map((option) => (
-                <label key={option} className="flex items-center mb-2">
-                    <input
-                        type="checkbox"
-                        checked={selectedOptions.includes(option)}
-                        onChange={() => onChange(option)}
-                        className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded"
-                    />
-                    <span className="text-gray-600">{option}</span>
-                </label>
+                isMoreOption(option) ? (
+                    <button
+                        key={option}
+                        onClick={onShowMore}
+                        className="text-blue-600 text-sm hover:underline mb-2"
+                    >
+                        {option}
+                    </button>
+                ) : (
+                    <label key={option} className="flex items-center mb-2">
+                        <input
+                            type="checkbox"
+                            checked={selectedOptions.includes(option)}
+                            onChange={() => onChange(option)}
+                            className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                        />
+                        <span className="text-gray-600">{option}</span>
+                    </label>
+                )
             ))}
         </div>
     );
@@ -28,6 +40,10 @@ const FilterSidebar = () => {
     const [fees, setFees] = useState([]);
     const [languages, setLanguages] = useState([]);
     const [facilities, setFacilities] = useState([]);
+    
+    // State for showing more options
+    const [showMoreExperience, setShowMoreExperience] = useState(false);
+    const [showMoreLanguages, setShowMoreLanguages] = useState(false);
 
     // Toggle checkbox state for each filter section
     const toggleCheckbox = (state, setState, value) => {
@@ -54,6 +70,10 @@ const FilterSidebar = () => {
     const languageOptions = ['English', 'Hindi', 'Telugu', '+10 More'];
     const facilityOptions = ['Apollo Hospital', 'Other Clinics'];
 
+    // Additional options that appear when "More" is clicked
+    const additionalExperienceOptions = ['17-20', '20+'];
+    const additionalLanguageOptions = ['Bengali', 'Tamil', 'Kannada', 'Malayalam', 'Gujarati', 'Marathi', 'Punjabi', 'Urdu', 'Odia', 'Assamese'];
+
     return (
         <div className="w-64 bg-white shadow-md rounded-lg p-4 sticky top-4">
             <div className="flex justify-between items-center mb-4">
@@ -79,9 +99,10 @@ const FilterSidebar = () => {
 
             <CheckboxGroup
                 title="Experience (In Years)"
-                options={experienceOptions}
+                options={showMoreExperience ? [...experienceOptions.slice(0, -1), ...additionalExperienceOptions] : experienceOptions}
                 selectedOptions={experience}
                 onChange={(value) => toggleCheckbox(experience, setExperience, value)}
+                onShowMore={() => setShowMoreExperience(!showMoreExperience)}
             />
 
             <CheckboxGroup
@@ -93,9 +114,10 @@ const FilterSidebar = () => {
 
             <CheckboxGroup
                 title="Language"
-                options={languageOptions}
+                options={showMoreLanguages ? [...languageOptions.slice(0, -1), ...additionalLanguageOptions] : languageOptions}
                 selectedOptions={languages}
                 onChange={(value) => toggleCheckbox(languages, setLanguages, value)}
+                onShowMore={() => setShowMoreLanguages(!showMoreLanguages)}
             />
 
             <CheckboxGroup
