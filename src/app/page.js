@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Main from "@/components/DoctorList";
 // import FilterSideBar from "@/components/FilterSideBar";
-import FilterSideBar from "@/components/FilterSidebar";
+import FilterSidebar from "@/components/FilterSidebar";
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
       <Navbar />
       <div className="grid grid-cols-12 w-full gap-4">
         <aside className="col-span-3">
-          <FilterSideBar />
+          <FilterSidebar />
         </aside>
         <main className="col-span-9">
           <Main />
