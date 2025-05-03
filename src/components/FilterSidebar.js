@@ -1,5 +1,5 @@
-"use client"
-import React, { useState } from 'react';
+"use client";
+import React, { useState, useEffect } from 'react';
 
 // Reusable CheckboxGroup Component for filter sections
 const CheckboxGroup = ({ title, options, selectedOptions, onChange, showMore, onShowMore }) => {
@@ -33,35 +33,10 @@ const CheckboxGroup = ({ title, options, selectedOptions, onChange, showMore, on
     );
 };
 
-const FilterSidebar = () => {
-    // State for each filter section
-    const [consultMode, setConsultMode] = useState(['Hospital Visit', 'Online']);
-    const [experience, setExperience] = useState([]);
-    const [fees, setFees] = useState([]);
-    const [languages, setLanguages] = useState([]);
-    const [facilities, setFacilities] = useState([]);
-    
+const FilterSidebar = ({ currentFilters = {}, onFilterChange }) => {
     // State for showing more options
     const [showMoreExperience, setShowMoreExperience] = useState(false);
     const [showMoreLanguages, setShowMoreLanguages] = useState(false);
-
-    // Toggle checkbox state for each filter section
-    const toggleCheckbox = (state, setState, value) => {
-        setState((prev) =>
-            prev.includes(value)
-                ? prev.filter((item) => item !== value)
-                : [...prev, value]
-        );
-    };
-
-    // Clear all filters
-    const clearAll = () => {
-        setConsultMode([]);
-        setExperience([]);
-        setFees([]);
-        setLanguages([]);
-        setFacilities([]);
-    };
 
     // Filter options
     const consultOptions = ['Hospital Visit', 'Online'];
@@ -73,6 +48,58 @@ const FilterSidebar = () => {
     // Additional options that appear when "More" is clicked
     const additionalExperienceOptions = ['17-20', '20+'];
     const additionalLanguageOptions = ['Bengali', 'Tamil', 'Kannada', 'Malayalam', 'Gujarati', 'Marathi', 'Punjabi', 'Urdu', 'Odia', 'Assamese'];
+
+    // Use the filtered state directly from props instead of maintaining local state
+    const consultMode = currentFilters.consultMode || [];
+    const experience = currentFilters.experience || [];
+    const fees = currentFilters.fees || [];
+    const languages = currentFilters.languages || [];
+    const facilities = currentFilters.facilities || [];
+
+    // Handlers for checkbox changes
+    const handleConsultModeChange = (value) => {
+        const newSelection = consultMode.includes(value)
+            ? consultMode.filter(item => item !== value)
+            : [...consultMode, value];
+        onFilterChange('consultMode', newSelection);
+    };
+
+    const handleExperienceChange = (value) => {
+        const newSelection = experience.includes(value)
+            ? experience.filter(item => item !== value)
+            : [...experience, value];
+        onFilterChange('experience', newSelection);
+    };
+
+    const handleFeesChange = (value) => {
+        const newSelection = fees.includes(value)
+            ? fees.filter(item => item !== value)
+            : [...fees, value];
+        onFilterChange('fees', newSelection);
+    };
+
+    const handleLanguagesChange = (value) => {
+        const newSelection = languages.includes(value)
+            ? languages.filter(item => item !== value)
+            : [...languages, value];
+        onFilterChange('languages', newSelection);
+    };
+
+    const handleFacilitiesChange = (value) => {
+        const newSelection = facilities.includes(value)
+            ? facilities.filter(item => item !== value)
+            : [...facilities, value];
+        onFilterChange('facilities', newSelection);
+    };
+
+    // Clear all filters
+    const clearAll = () => {
+        onFilterChange('consultMode', []);
+        onFilterChange('experience', []);
+        onFilterChange('fees', []);
+        onFilterChange('languages', []);
+        onFilterChange('facilities', []);
+    };
 
     return (
         <div className="w-64 bg-white shadow-md rounded-lg p-4 sticky top-4">
@@ -94,14 +121,14 @@ const FilterSidebar = () => {
                 title="Mode of Consult"
                 options={consultOptions}
                 selectedOptions={consultMode}
-                onChange={(value) => toggleCheckbox(consultMode, setConsultMode, value)}
+                onChange={handleConsultModeChange}
             />
 
             <CheckboxGroup
                 title="Experience (In Years)"
                 options={showMoreExperience ? [...experienceOptions.slice(0, -1), ...additionalExperienceOptions] : experienceOptions}
                 selectedOptions={experience}
-                onChange={(value) => toggleCheckbox(experience, setExperience, value)}
+                onChange={handleExperienceChange}
                 onShowMore={() => setShowMoreExperience(!showMoreExperience)}
             />
 
@@ -109,14 +136,14 @@ const FilterSidebar = () => {
                 title="Fees (In Rupees)"
                 options={feesOptions}
                 selectedOptions={fees}
-                onChange={(value) => toggleCheckbox(fees, setFees, value)}
+                onChange={handleFeesChange}
             />
 
             <CheckboxGroup
                 title="Language"
                 options={showMoreLanguages ? [...languageOptions.slice(0, -1), ...additionalLanguageOptions] : languageOptions}
                 selectedOptions={languages}
-                onChange={(value) => toggleCheckbox(languages, setLanguages, value)}
+                onChange={handleLanguagesChange}
                 onShowMore={() => setShowMoreLanguages(!showMoreLanguages)}
             />
 
@@ -124,7 +151,7 @@ const FilterSidebar = () => {
                 title="Facility"
                 options={facilityOptions}
                 selectedOptions={facilities}
-                onChange={(value) => toggleCheckbox(facilities, setFacilities, value)}
+                onChange={handleFacilitiesChange}
             />
         </div>
     );
