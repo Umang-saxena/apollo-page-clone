@@ -1,5 +1,5 @@
-import connectDB from 'lib/connectDB';
-import Doctor from 'models/Doctor';
+import connectDB from '@lib/connectDB';
+import Doctor from '@models/Doctor';
 
 export default async function handler(req, res) {
     if (req.method === 'GET') {
