@@ -1,6 +1,5 @@
-import connectDB from '@lib/connectDB';
-import Doctor from '@models/Doctor';
-
+import connectDB from '../../lib/connectDB'
+import Doctor from '../../models/Doctor' // Adjust the path as necessary
 export default async function handler(req, res) {
     if (req.method === 'GET') {
         try {
