@@ -1,7 +1,8 @@
-import Navbar from "@/components/Navbar";
-import Main from "@/components/DoctorList";
-// import FilterSideBar from "@/components/FilterSideBar";
-import FilterSidebar from "@/components/FilterSidebar";
+import React, { Suspense } from 'react';
+import Navbar from "../components/Navbar";
+import DoctorList from "../components/DoctorList";
+// import FilterSidebar from "components/FilterSidebar";
+// import FilterSidebar from "components/FilterSidebar";
 
 export default function Home() {
   return (
@@ -9,7 +10,9 @@ export default function Home() {
       <Navbar />
       <div className="grid grid-cols-12 w-full gap-4">
         <main className="col-span-9">
-          <Main />
+          <Suspense fallback={<div>Loading...</div>}>
+            <DoctorList />
+          </Suspense>
         </main>
       </div>
     </div>
