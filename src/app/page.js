@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Main from "@/components/DoctorList";
 // import FilterSideBar from "@/components/FilterSideBar";
-import FilterSideBar from "@/components/FilterSidebar";
+import FilterSidebar from "@/components/FilterSidebar";
 
 export default function Home() {
   return (

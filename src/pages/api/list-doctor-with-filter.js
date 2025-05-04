@@ -1,5 +1,5 @@
-import connectDB from '@/lib/connectDB';
-import Doctor from '@/models/Doctor';
+import connectDB from '@lib/connectDB';
+import Doctor from '@models/Doctor';
 
 export default async function handler(req, res) {
     if (req.method === 'GET') {
@@ -7,17 +7,27 @@ export default async function handler(req, res) {
             // Connect to the database
             await connectDB();
 
-            // Extract filters and pagination parameters from the query
-            const { searchParams } = new URL(req.url, 'http://localhost'); // Add the base URL to request.url for Node.js
+            // Extract filters and pagination parameters from req.query
+            const {
+                experience,
+                fees,
+                languages,
+                consultMode,
+                availability,
+                sortBy,
+                page = '1',
+                limit = '8',
+            } = req.query;
+
             const filters = {
-                experience: searchParams.get('experience'),
-                fees: searchParams.get('fees'),
-                languages: searchParams.get('languages'),
-                modeOfConsult: searchParams.get('modeOfConsult'),
-                availability: searchParams.get('availability'),
-                sortBy: searchParams.get('sortBy'),
-                page: parseInt(searchParams.get('page') || '1'),  // Get page number, default to 1
-                limit: parseInt(searchParams.get('limit') || '8'), // Get limit, default to 8
+                experience,
+                fees,
+                languages,
+                consultMode,
+                availability,
+                sortBy,
+                page: parseInt(page, 10),
+                limit: parseInt(limit, 10),
             };
 
             // Build the query object based on filters
@@ -41,9 +51,9 @@ export default async function handler(req, res) {
                 query['languages'] = { $in: languagesArray };
             }
 
-            // Filter by mode of consultation
-            if (filters.modeOfConsult) {
-                const modeArray = filters.modeOfConsult.split(',');
+            // Filter by consultMode
+            if (filters.consultMode) {
+                const modeArray = filters.consultMode.split(',');
                 query['modeOfConsult'] = { $in: modeArray };
             }
 
