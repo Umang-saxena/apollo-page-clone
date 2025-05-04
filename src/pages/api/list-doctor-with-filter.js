@@ -1,5 +1,5 @@
-import connectDB from '@/lib/connectDB';
-import Doctor from '@/models/Doctor';
+import connectDB from 'lib/connectDB';
+import Doctor from 'models/Doctor';
 
 export default async function handler(req, res) {
     if (req.method === 'GET') {
@@ -13,7 +13,7 @@ export default async function handler(req, res) {
                 experience: searchParams.get('experience'),
                 fees: searchParams.get('fees'),
                 languages: searchParams.get('languages'),
-                modeOfConsult: searchParams.get('modeOfConsult'),
+                consultMode: searchParams.get('consultMode'),  // Changed from modeOfConsult to consultMode
                 availability: searchParams.get('availability'),
                 sortBy: searchParams.get('sortBy'),
                 page: parseInt(searchParams.get('page') || '1'),  // Get page number, default to 1
@@ -41,9 +41,9 @@ export default async function handler(req, res) {
                 query['languages'] = { $in: languagesArray };
             }
 
-            // Filter by mode of consultation
-            if (filters.modeOfConsult) {
-                const modeArray = filters.modeOfConsult.split(',');
+            // Filter by consultMode (was modeOfConsult)
+            if (filters.consultMode) {
+                const modeArray = filters.consultMode.split(',');
                 query['modeOfConsult'] = { $in: modeArray };
             }
 
