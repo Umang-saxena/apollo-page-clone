@@ -21,6 +21,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'via.placeholder.com',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'wallpaperaccess.com',
+        pathname: '/**',
       }
     ],
   },
