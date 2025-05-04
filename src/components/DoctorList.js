@@ -103,6 +103,9 @@ const DoctorList = () => {
           <h1 className="text-2xl font-bold text-[#02475b]">
             Consult General Physicians Online - Internal Medicine Specialists
           </h1>
+          <button className="mt-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+          <a href="/newDoctor" className="text-white0 hover:underline" target='_blank'>Add Doctor</a>
+          </button>
           <p className="text-gray-600">({doctors.length} doctors)</p>
         </div>
 
